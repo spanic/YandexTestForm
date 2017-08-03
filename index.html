@@ -6,13 +6,16 @@
 	<link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
 <body>
-	<div class="mainContainer">
+	<div id="mainContainer">
 		<form id="myForm">
-			<label for="name">Name:</label><input type="text" placeholder="Robert Louis Stevenson" name="fio" id="name">
-			<label for="email">E-mail:</label><input type="email" placeholder="robert.stevenson@yandex.ru" name="email" id="email">
-			<label for="phone">Phone:</label><input type="tel" placeholder="+7 (___) ___-__-__" name="phone" id="phone">
+			<img src="img/user.svg"><label for="name">Name:</label><input type="text" placeholder="Robert Louis Stevenson" name="fio" id="name">
+			<img src="img/mail.svg"><label for="email">E-mail:</label><input type="email" placeholder="robert.stevenson@yandex.ru" name="email" id="email">
+			<img src="img/phone.svg"><label for="phone">Phone:</label><input type="tel" class="error" placeholder="+7 (___) ___-__-__" name="phone" id="phone">
 			<input type="submit" id="submitButton" value="Submit">
 		</form>
+		<div id="resultContainer">
+			<span>Result:</span>
+		</div>
 	</div>
 </body>
 </html>
