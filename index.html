@@ -2,15 +2,17 @@
 <html>
 <head>
 	<title>Sadulin A. &mdash; Yandex Test Form</title>
+	<meta charset="utf-8">
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="style/style.css">
+	<script type="text/javascript" src="index.js" defer></script>
 </head>
 <body>
 	<div id="mainContainer">
 		<form id="myForm">
-			<img src="img/user.svg"><label for="name">Name:</label><input type="text" placeholder="Robert Louis Stevenson" name="fio" id="name">
-			<img src="img/mail.svg"><label for="email">E-mail:</label><input type="email" placeholder="robert.stevenson@yandex.ru" name="email" id="email">
-			<img src="img/phone.svg"><label for="phone">Phone:</label><input type="tel" class="error" placeholder="+7 (___) ___-__-__" name="phone" id="phone">
+			<object type="image/svg+xml" data="img/icons.svg#user"></object><label for="name">Name:</label><input type="text" placeholder="Robert Louis Stevenson" name="fio" id="name">
+			<object type="image/svg+xml" data="img/icons.svg#mail"></object><label for="email">E-mail:</label><input type="email" placeholder="robert.stevenson@yandex.ru" name="email" id="email">
+			<object type="image/svg+xml" data="img/icons.svg#phone"></object><label for="phone">Phone:</label><input type="tel" class="error" placeholder="+7 (___) ___-__-__" name="phone" id="phone">
 			<input type="submit" id="submitButton" value="Submit">
 		</form>
 		<div id="resultContainer">

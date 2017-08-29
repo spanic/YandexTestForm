@@ -29,14 +29,14 @@ body {
 	background-color: white;
 }
 
-#myForm label, #myForm input, #myForm img {
+#myForm label, #myForm input, #myForm object {
 	height: 40px;
 	margin-bottom: 27px;
 	line-height: 40px;
 	vertical-align: middle;
 }
 
-#myForm img {
+#myForm object {
 	display: inline-block;
 	position: relative;
 	width: 8%; 
@@ -64,8 +64,6 @@ body {
 
 #myForm input:focus {
 	border-bottom-color: #53b9ba;
-	-webkit-transition: .2s ease-in-out;
-	transition: .2s ease-in-out;
 }
 
 #myForm input[type="submit"] {
@@ -83,8 +81,6 @@ body {
 
 #myForm input[type="submit"]:hover {
 	background-color: #53b9ba;
-	-webkit-transition: .2s ease-in-out;
-	transition: .2s ease-in-out;
 }
 
 #myForm:after {
@@ -106,12 +102,13 @@ body {
 }
 
 *::-webkit-input-placeholder {
-	color: #eeeeee;
+	color: #9e9e9e;
 }
 
 *::-moz-placeholder {
-	color: #eeeeee
+	color: #9e9e9e
 }
+
 *:-ms-input-placeholder {
-	color: #eeeeee
+	color: #9e9e9e
 }
