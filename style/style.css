@@ -53,7 +53,7 @@ body {
 	width: 70%;
 	padding: 0;
 	border: none;
-	border-bottom: 2px solid #757575;
+	border-bottom: 1px solid #757575;
 	box-sizing: border-box;
 	text-align: center;
 	font-family: inherit;
@@ -90,7 +90,8 @@ body {
 }
 
 .error {
-	border: 1px solid red;
+	border: 1px solid red !important;
+	border-radius: 7px;
 }
 
 #resultContainer {
