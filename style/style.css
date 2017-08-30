@@ -58,12 +58,12 @@ body {
 	text-align: center;
 	font-family: inherit;
 	font-size: inherit;
-	-webkit-transition: border-bottom-color .2s ease-in-out;
-	transition: border-bottom-color .2 ease-in-out;
 }
 
 #myForm input:focus {
 	border-bottom-color: #53b9ba;
+	-webkit-transition: .2s ease-in-out;
+	transition: .2 ease-in-out;
 }
 
 #myForm input[type="submit"] {
@@ -91,7 +91,9 @@ body {
 
 .error {
 	border: 1px solid red !important;
-	border-radius: 7px;
+	background-color: rgba(223, 71, 65, 0.03);
+	-webkit-transition: .2s ease-in-out;
+	transition: .2s ease-in-out;
 }
 
 #resultContainer {

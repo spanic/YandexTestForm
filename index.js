@@ -6,6 +6,8 @@ const mainForm = document.getElementById("myForm"),
 	phoneInput = document.getElementById("phone"),
 	submitButton = document.getElementById("submitButton");
 
+removeErrorClass(userNameInput, emailInput, phoneInput);
+
 let MyForm = {
 
 	validate() {
@@ -25,35 +27,52 @@ let MyForm = {
 
 	getData() {
 
+		let formDataObject = addPropertyWithValue(userNameInput, emailInput, phoneInput);
+		return formDataObject;
+
 	},
 
 	setData(formData) {
+
+		for (let currentProperty in formData) {
+
+			let targetInputField;
+
+			switch (currentProperty) {
+				case userNameInput.name : targetInputField = userNameInput; break;
+				case emailInput.name : targetInputField = emailInput; break;
+				case phoneInput.name : targetInputField = phoneInput; break;
+			}
+
+			if (targetInputField != undefined) {targetInputField.value = formData[currentProperty];}
+
+		}
 
 	},
 
 	submit() {
 
+		let formValidationResult = MyForm.validate();
+
+		if (!formValidationResult.isValid) {
+
+			formValidationResult.errorFields.forEach(function(inputName) {
+				addErrorClass(inputName);
+			});
+		}
+
 	}
 
 }
 
-mainForm.onsubmit = function (e) {
+submitButton.onclick = function (e) {
 
 	e.preventDefault();
 
 	let formData = this;
-
 	console.dir(formData);
 
-	let formValidationResult = MyForm.validate();
-
-	if (!formValidationResult.isValid) {
-
-		formValidationResult.errorFields.forEach(function(inputName) {
-			addErrorClass(inputName);
-		});
-
-	}
+	MyForm.submit();
 
 }
 
@@ -126,5 +145,29 @@ function addErrorClass(inputName) {
 
 	let fieldNode = document.getElementsByName(inputName)[0];
 	fieldNode.classList.add("error");
+
+}
+
+function removeErrorClass() {
+
+	Array.prototype.forEach.call(arguments, function(inputNode) {
+		inputNode.addEventListener("focus", function() {this.classList.remove("error");});
+	});
+
+}
+
+function addPropertyWithValue() {
+
+	let resultObject = {};
+
+	console.log(arguments);
+
+	Array.prototype.forEach.call(arguments, function(inputNode) {
+		Object.defineProperty(resultObject, inputNode.name, {
+			value : inputNode.value
+		})
+	});
+
+	return resultObject;
 
 }
