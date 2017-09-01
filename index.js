@@ -4,7 +4,10 @@ const mainForm = document.getElementById("myForm"),
 	userNameInput = document.getElementById("name"),
 	emailInput = document.getElementById("email"),
 	phoneInput = document.getElementById("phone"),
-	submitButton = document.getElementById("submitButton");
+	submitButton = document.getElementById("submitButton"),
+	resultContainer = document.getElementById("resultContainer");
+
+const responseTemplateNames = ["success.json", "error.json", "progress.json"];
 
 removeErrorClass(userNameInput, emailInput, phoneInput);
 
@@ -20,6 +23,10 @@ let MyForm = {
 		if (!verifyPhone(phoneInput.value)) {errorFields.push(phoneInput.name)};
 
 		if (errorFields.length != 0) {isValid = false;}
+		
+		errorFields.forEach(function(inputName) {
+			addErrorClass(inputName);
+		});
 
 		return {isValid, errorFields};
 
@@ -51,14 +58,39 @@ let MyForm = {
 	},
 
 	submit() {
+		
+		let test = MyForm.validate();
+		
+		console.dir(test);
 
-		let formValidationResult = MyForm.validate();
+		if (test.isValid) {
+			
+			disableSubmitButton();
+		
+			let randomResponceTemplateNumber = Math.floor(Math.random() * 3);
 
-		if (!formValidationResult.isValid) {
+			let ajaxRequest = new XMLHttpRequest();
 
-			formValidationResult.errorFields.forEach(function(inputName) {
-				addErrorClass(inputName);
-			});
+			ajaxRequest.onreadystatechange = function() {
+
+				if (this.readyState == XMLHttpRequest.DONE && 
+					(this.status == 0 || this.status == 200)) /* Zero status value added to maintain local ALAX calls */ {
+					
+					let responseJSONObject = JSON.parse(this.responseText);
+					console.log(responseJSONObject);
+					processResponse(responseJSONObject);					
+					
+				}
+
+			};
+			
+			let responseTemplateName = responseTemplateNames[randomResponceTemplateNumber];
+			
+			console.log(mainForm.action + "/" + responseTemplateName);
+
+			ajaxRequest.open("GET", mainForm.action + "/" + responseTemplateName);
+			ajaxRequest.send();
+			
 		}
 
 	}
@@ -144,6 +176,7 @@ function verifyPhone(phoneNumber) {
 function addErrorClass(inputName) {
 
 	let fieldNode = document.getElementsByName(inputName)[0];
+	fieldNode.classList.add("incorrect");
 	fieldNode.classList.add("error");
 
 }
@@ -151,7 +184,10 @@ function addErrorClass(inputName) {
 function removeErrorClass() {
 
 	Array.prototype.forEach.call(arguments, function(inputNode) {
-		inputNode.addEventListener("focus", function() {this.classList.remove("error");});
+		inputNode.addEventListener("focus", function() {
+			this.classList.remove("incorrect");
+			this.classList.remove("error");
+		});
 	});
 
 }
@@ -170,4 +206,81 @@ function addPropertyWithValue() {
 
 	return resultObject;
 
+}
+
+function processResponse(responseJSONObject) {
+	
+	let responseTextElementId = "resultText",
+		responseIconElementId = "resultIcon";
+	
+	resultContainer.removeAttribute("class");
+	removeElementIfExists(responseIconElementId, responseTextElementId);
+	
+	let responseTextNode = document.createElement("span");
+	responseTextNode.id = responseTextElementId;
+	let responseTextContent;
+	
+	let resultIcon = document.createElement("object");
+	resultIcon.setAttribute("type", "image/svg+xml");
+	resultIcon.id = responseIconElementId;
+	let displayedIconName;
+	
+	let responseStatus = responseJSONObject.status;
+	switch (responseStatus) {
+			
+		case "success" : {
+			resultContainer.classList.add("success");
+			responseTextContent = "Success";
+			displayedIconName = "correct";
+			enableSubmitButton();
+			break;
+		}
+		
+		case "error" : {
+			resultContainer.classList.add("error");
+			responseTextContent = responseJSONObject.reason;
+			displayedIconName = "incorrect";
+			enableSubmitButton();
+			break;
+		}
+		
+		case "progress" : {
+			resultContainer.classList.add("progress");
+			responseTextContent = "Service is busy, wait please...";
+			displayedIconName = "pending";
+			setTimeout(function() {MyForm.submit();}, responseJSONObject.timeout);
+			break;
+		}
+		
+	}
+	
+	responseTextNode.textContent = responseTextContent;
+	resultIcon.setAttribute("data", "img/icons.svg#" + displayedIconName);
+	
+	resultContainer.appendChild(resultIcon);
+	resultContainer.appendChild(responseTextNode);
+	
+}
+
+function removeElementIfExists() {
+	
+	Array.prototype.forEach.call(arguments, function(nodeId) {
+		if (document.contains(document.getElementById(nodeId)))
+			document.getElementById(nodeId).remove();
+	});
+	
+}
+
+function disableSubmitButton() {
+	
+	submitButton.disabled = true;
+	submitButton.classList.add("disabled");
+	
+}
+
+function enableSubmitButton() {
+	
+	submitButton.disabled = false;
+	submitButton.classList.remove("disabled");
+	
 }
